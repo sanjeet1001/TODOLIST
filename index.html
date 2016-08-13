@@ -1,0 +1,116 @@
+<DOCTYPE html>
+<html>
+	<head>
+		<title>TODO APP</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<script src="jquery-3.1.0.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		
+	</head>
+	
+	<body>
+		<script src="https://cloudboost.io/js-sdk/cloudboost.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="index.js"></script>
+		<style>
+			.container{
+				height:550px;
+				width:450px;
+				margin-top:100px;
+				left:530px;
+				border: 2px solid #73AD21;
+				background-color:#853962;
+			}
+		</style>
+		
+		
+	
+		<div class="container">
+		
+			<div class="row" style="background-color:#ccd3ff;">
+				<img src="todologo.png" style="display:inline-flex; position:inherit;height:50px; width:50px; margin-top:5px; margin-left:5px; ">
+				<div style="display:inline-block; position:absolute; margin-top:20px; margin-left:100px;">
+					<span> TODO APP</span>
+				</div>
+			</div>
+			
+			<div class="row">
+				<form class="form-inline" style="margin-top:20px; role="form">
+				  <div class="form-group">
+					<input type="text" style="width:240px; margin-left:10px;" placeholder="Task Name" class="form-control" id="task_name">
+					
+					<select class="form-control" style="width:100px;margin-left:3px;" id="prio">
+						<option  value="0">Priority</option>
+						<option style="background-color:#ff9999;" id="High" value="High">High</option>
+						<option style="background-color:#fff7a8;" id="Medium" value="Medium">Medium</option>
+						<option style="background-color:#c1ffb7;" id="Low" value="Low">Low</option>
+					</select>
+					
+					<div class="btn-group" style="margin-left:3px;" role="group" aria-label="...">
+					  <button type="button" style=" width:70px;" value="button" class="btn btn-info" id="new_task" onclick="xyz()"> Add </button>
+					</div>
+				  </div>
+				</form>
+			</div>
+			
+			<div class="row" style="overflow: auto;position:relative; top:30px; height:390px;">
+				<div class="table-responsive">
+				  <table class="table" id="myTable" style="background-color:#fbe1d2;">
+					<thead>
+					  <tr style="background-color:#F7F7F7;">
+						<th>Task Name</th>
+						<th>Priority</th>
+						<th colspan="2" style="padding-left:30px;">Action</th>
+					  </tr>
+					  <tr>
+					  </tr>
+					</thead>
+				  </table>
+				</div>
+			</div>
+		
+		</div>
+		<script>
+			function xyz() {
+				var task_name = document.getElementById("task_name").value;
+				var prio = document.getElementById("prio").value;
+			var table = document.getElementById("myTable");
+			if(task_name==""){
+				alert("First Give Task Name..");
+				return null;
+			}
+			else if(prio=="" || prio == "0"){
+				alert("Set Priority");
+				return null;
+			}
+			var row = table.insertRow(1);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			cell1.style.width = '170px';
+			cell2.style.width = '100px';
+			cell1.innerHTML = task_name;
+			cell2.innerHTML = prio;
+			cell3.innerHTML = '<button type="button" style=" width:50px; display:inline-block; font-size:10px;" class="btn btn-warning"> <b>Done</b> </button><button type="button" style=" margin-left:15px; width:50px; display:inline-block; font-size:10px;" class="btn btn-danger"><b> Delete</b> </button>';
+			}
+			
+			function done_task(done_id){
+				var did = done_id.split("_");
+				var table = new CB.CloudTable("Task_List");
+				obj = new CB.CloudObject("Task_List");
+				var row = new CB.Row("Id",did[0]);
+				table.deleteRow(row);
+				table.save().then(function(obj){
+					console.log('Successfully deleted');
+				}, function(err){
+					console.log("oops!! a problem occured while deleting.. please try again.");
+				});
+			}
+			
+			
+		</script>
+	</body>
+		<!--<script src="js/script.js"></script>-->
+</html>
